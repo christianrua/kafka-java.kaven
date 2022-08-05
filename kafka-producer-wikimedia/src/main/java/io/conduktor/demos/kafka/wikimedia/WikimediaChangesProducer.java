@@ -1,17 +1,18 @@
 package io.conduktor.demos.kafka.wikimedia;
 
 import com.launchdarkly.eventsource.EventSource;
+import com.launchdarkly.eventsource.EventHandler;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.beans.EventHandler;
 import java.net.URI;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class WikimediaChangesProducer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         String bootstrapServers = "127.0.0.1:9092";
 
@@ -33,6 +34,9 @@ public class WikimediaChangesProducer {
 
         // start the producer in another thread
         eventSource.start();
+
+        // we produce for 10 minutes and block the program until then
+        TimeUnit.MINUTES.sleep(10);
 
     }
 }
